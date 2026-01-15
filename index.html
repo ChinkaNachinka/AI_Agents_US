@@ -50,23 +50,26 @@
         .nav-links a:hover { color: var(--primary-solid); }
 
         /* --- HERO --- */
-        header { text-align: center; padding: 80px 20px 100px; }
+        header { text-align: center; padding: 100px 20px 120px; }
         .pill { background: var(--secondary-bg); color: var(--primary-solid); padding: 8px 16px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; display: inline-block; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px;}
         h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1px;}
         h1 span { background: linear-gradient(180deg, transparent 65%, #D6BCFA 65%); }
         .subtitle { font-size: 1.25rem; color: var(--text-grey); max-width: 700px; margin: 0 auto 40px; line-height: 1.6; }
         .hero-btns { display: flex; gap: 15px; justify-content: center; }
 
-        /* --- SECTIONS --- */
-        section { padding: 80px 0; }
+        /* --- SECTIONS (FIXED SPACING) --- */
+        section { padding: 100px 0; }
+
+        /* Explicit massive top padding for the two crowded sections */
+        #cases { padding-top: 160px; } 
+        #form { padding-top: 160px; }
+        
         .sec-title { font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 15px; letter-spacing: -0.5px; }
-        .sec-sub { text-align: center; color: var(--text-grey); margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto; font-size: 1.1rem;}
+        .sec-sub { text-align: center; color: var(--text-grey); margin-bottom: 60px; max-width: 600px; margin-left: auto; margin-right: auto; font-size: 1.1rem;}
         
         /* --- CARDS & GRID --- */
-        /* Updated Grid for Form Section Spacing */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
         
-        /* Grid optimized for 5 items (3 top, 2 bottom centered) */
         .grid-auto { 
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
@@ -131,24 +134,25 @@
         .cost-val { font-size: 2.5rem; font-weight: 800; margin: 10px 0; letter-spacing: -1px;}
         .cost-label { text-transform: uppercase; font-size: 0.85rem; font-weight: 700; color: #9CA3AF; letter-spacing: 1px;}
 
-        /* --- FORM STYLES (UPDATED WITH MORE SPACE) --- */
+        /* --- FORM STYLES (UPDATED SPACING) --- */
         .form-section { 
             background: white; 
             border-radius: var(--radius-xl); 
-            padding: 60px 50px; /* More padding */
+            /* Fixed: 80px top padding ensures title isn't cramped */
+            padding: 80px 50px; 
             box-shadow: var(--shadow-soft); 
-            max-width: 900px; /* Wider container */
+            max-width: 900px; 
             margin: 0 auto; 
             position: relative; 
             overflow: hidden; 
         }
         .form-section::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: var(--primary-grad); }
         
-        .form-group { margin-bottom: 35px; text-align: left; } /* More vertical space */
+        .form-group { margin-bottom: 35px; text-align: left; }
         .form-label { display: block; font-weight: 600; margin-bottom: 12px; font-size: 1rem; color: var(--text-dark); }
         .form-select, .form-input { 
             width: 100%; 
-            padding: 16px 20px; /* Taller inputs */
+            padding: 16px 20px; 
             border: 1px solid #E5E7EB; 
             border-radius: 12px; 
             font-size: 1rem; 
