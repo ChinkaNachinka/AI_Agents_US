@@ -63,7 +63,8 @@
         .sec-sub { text-align: center; color: var(--text-grey); margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto; font-size: 1.1rem;}
         
         /* --- CARDS & GRID --- */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        /* Updated Grid for Form Section Spacing */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
         
         /* Grid optimized for 5 items (3 top, 2 bottom centered) */
         .grid-auto { 
@@ -130,29 +131,24 @@
         .cost-val { font-size: 2.5rem; font-weight: 800; margin: 10px 0; letter-spacing: -1px;}
         .cost-label { text-transform: uppercase; font-size: 0.85rem; font-weight: 700; color: #9CA3AF; letter-spacing: 1px;}
 
-        /* --- FORM STYLES --- */
+        /* --- FORM STYLES (UPDATED WITH MORE SPACE) --- */
         .form-section { 
             background: white; 
             border-radius: var(--radius-xl); 
-            padding: 60px 50px; /* Increased top/bottom padding */
+            padding: 60px 50px; /* More padding */
             box-shadow: var(--shadow-soft); 
-            max-width: 900px; /* Slightly wider to prevent cramping */
+            max-width: 900px; /* Wider container */
             margin: 0 auto; 
             position: relative; 
             overflow: hidden; 
         }
         .form-section::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: var(--primary-grad); }
         
-        /* Adds space between the two columns */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; } 
-
-        /* Adds more space below each input field */
-        .form-group { margin-bottom: 35px; text-align: left; } 
-        
+        .form-group { margin-bottom: 35px; text-align: left; } /* More vertical space */
         .form-label { display: block; font-weight: 600; margin-bottom: 12px; font-size: 1rem; color: var(--text-dark); }
         .form-select, .form-input { 
             width: 100%; 
-            padding: 16px 20px; /* Bigger touch target */
+            padding: 16px 20px; /* Taller inputs */
             border: 1px solid #E5E7EB; 
             border-radius: 12px; 
             font-size: 1rem; 
@@ -166,9 +162,9 @@
 
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
-            .grid-2 { grid-template-columns: 1fr; }
+            .grid-2 { grid-template-columns: 1fr; gap: 20px; }
             .nav-links { display: none; }
-            .form-section { padding: 30px 20px; }
+            .form-section { padding: 40px 20px; }
             .hero-btns { flex-direction: column; }
         }
     </style>
@@ -334,12 +330,12 @@
         <h2 class="sec-title">Get Your AI Strategy Report</h2>
         <p class="sec-sub">Fill out the form below to get a custom breakdown of how AI can lower your overhead and increase sales in California.</p>
         
-        <form onsubmit="alert('Thanks! We will contact you shortly with your report.'); return false;">
+        <form action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" method="POST">
             
             <div class="grid-2">
                 <div class="form-group">
                     <label class="form-label">Business Industry</label>
-                    <select class="form-select">
+                    <select name="industry" class="form-select">
                         <option>🏠 Home Remodeling / Construction</option>
                         <option>❄️ HVAC / Plumbing / Electric</option>
                         <option>🚗 Auto Repair / Detailing</option>
@@ -352,7 +348,7 @@
 
                 <div class="form-group">
                     <label class="form-label">Monthly Ad Spend (Google/Meta)</label>
-                    <select class="form-select">
+                    <select name="ad_spend" class="form-select">
                         <option>None (Word of Mouth)</option>
                         <option>Under $1,000</option>
                         <option selected>$1,000 - $5,000</option>
@@ -365,7 +361,7 @@
             <div class="grid-2">
                 <div class="form-group">
                     <label class="form-label">Primary Pain Point?</label>
-                    <select class="form-select">
+                    <select name="pain_point" class="form-select">
                         <option>Missed Calls / Speed to Lead</option>
                         <option>High Staff Costs (Salaries)</option>
                         <option>Need Bilingual Support (Español)</option>
@@ -375,18 +371,18 @@
 
                 <div class="form-group">
                     <label class="form-label">Website URL (Optional)</label>
-                    <input type="text" class="form-input" placeholder="www.yourbusiness.com">
+                    <input type="text" name="website" class="form-input" placeholder="www.yourbusiness.com">
                 </div>
             </div>
 
             <div class="grid-2">
                 <div class="form-group">
                     <label class="form-label">Your Name</label>
-                    <input type="text" class="form-input" placeholder="John Doe" required>
+                    <input type="text" name="name" class="form-input" placeholder="John Doe" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-input" placeholder="(415) 555-0123" required>
+                    <input type="tel" name="phone" class="form-input" placeholder="(415) 555-0123" required>
                 </div>
             </div>
             
