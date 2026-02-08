@@ -3,406 +3,436 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Workforce for California Business</title>
+    <title>PocketVC | AI Infrastructure for Local Business</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         /* --- DESIGN TOKENS --- */
         :root {
             --primary-grad: linear-gradient(135deg, #7F27FF 0%, #9F70FD 100%);
-            --primary-solid: #7F27FF;
-            --secondary-bg: #F0E6FF;
+            --primary-color: #7F27FF;
             --bg-main: #F8F9FB;
-            --text-dark: #111827;
-            --text-grey: #6B7280;
-            --radius-xl: 24px;
+            --bg-white: #FFFFFF;
+            --text-dark: #1A1A1A;
+            --text-grey: #555555;
+            --radius-xl: 30px;
+            --radius-lg: 24px;
             --radius-md: 16px;
             --shadow-soft: 0 20px 40px rgba(127, 39, 255, 0.07);
+            --shadow-hover: 0 25px 50px rgba(127, 39, 255, 0.15);
+            
+            /* Chat Interface Colors */
+            --msg-green-header: #075E54;
+            --msg-bg: #E5DDD5;
+            --msg-bubble-user: #DCF8C6;
+            --msg-bubble-ai: #FFFFFF;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-        body { background: var(--bg-main); color: var(--text-dark); overflow-x: hidden; }
-        a { text-decoration: none; color: inherit; cursor: pointer; }
-        
-        /* --- BACKGROUND BLOBS --- */
-        .blobs { position: fixed; width: 100%; height: 100%; z-index: -1; pointer-events: none; overflow: hidden;}
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        section, header, footer { position: relative; z-index: 2; }
+
+        /* --- BACKGROUND EFFECTS --- */
+        .bg-gradients {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; overflow: hidden;
+        }
         .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.4; }
-        .b1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #E0C6FF; }
-        .b2 { top: 30%; right: -10%; width: 40vw; height: 40vw; background: #D0B0FF; }
+        .blob-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #E0C6FF; }
+        .blob-2 { top: 30%; right: -20%; width: 40vw; height: 40vw; background: #D0B0FF; }
 
-        /* --- UI COMPONENTS --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .btn { padding: 14px 28px; border-radius: 100px; font-weight: 600; transition: 0.3s; border: none; cursor: pointer; display: inline-block;}
-        .btn-primary { background: var(--primary-grad); color: white; box-shadow: 0 10px 20px rgba(127, 39, 255, 0.25); }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(127, 39, 255, 0.35); }
-        .btn-white { background: white; color: var(--primary-solid); box-shadow: var(--shadow-soft); }
-        .btn-white:hover { transform: translateY(-3px); }
-
-        /* --- NAV --- */
-        nav { 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(255,255,255,0.8); backdrop-filter: blur(15px);
-            padding: 15px 30px; margin: 20px auto; max-width: 1000px; border-radius: 100px;
-            position: sticky; top: 20px; z-index: 100; box-shadow: var(--shadow-soft);
+        /* --- UTILITIES --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 5%; }
+        .text-center { text-align: center; }
+        .section-pad { padding: 100px 0; }
+        
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-block; padding: 16px 32px; border-radius: 100px;
+            font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; border: none;
         }
-        .logo { font-weight: 800; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
-        .dot { width: 12px; height: 12px; background: var(--primary-solid); border-radius: 50%; }
-        .nav-links a { margin: 0 15px; font-weight: 500; font-size: 0.95rem; }
-        .nav-links a:hover { color: var(--primary-solid); }
+        .btn-primary { background: var(--primary-grad); color: white; box-shadow: 0 10px 20px rgba(127, 39, 255, 0.2); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(127, 39, 255, 0.3); }
+        .btn-white { background: var(--bg-white); color: var(--text-dark); box-shadow: var(--shadow-soft); }
+        .btn-white:hover { transform: translateY(-3px); color: var(--primary-color); }
+
+        /* --- TYPOGRAPHY --- */
+        h1 { font-size: 3.5rem; line-height: 1.2; font-weight: 800; margin-bottom: 25px; letter-spacing: -1px; }
+        h2.section-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -0.5px; }
+        p.section-subtitle { font-size: 1.2rem; color: var(--text-grey); margin-bottom: 50px; max-width: 700px; margin-left: auto; margin-right: auto;}
+        .highlight-text { background: linear-gradient(transparent 65%, #D0B0FF 65%); display: inline; }
+        .pill-tag { display: inline-block; background: #EBE0FF; color: var(--primary-color); padding: 8px 20px; border-radius: 100px; font-size: 0.9rem; font-weight: 600; margin-bottom: 25px; letter-spacing: 0.5px; text-transform: uppercase;}
+
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px);
+            padding: 15px 30px; border-radius: 100px;
+            position: sticky; top: 20px; z-index: 100;
+            width: 90%; max-width: 1100px; margin: 20px auto 0;
+            box-shadow: var(--shadow-soft);
+        }
+        .logo { font-weight: 800; font-size: 1.3rem; color: var(--text-dark); display: flex; align-items: center; gap: 10px;}
+        .logo-dot { height: 24px; width: 24px; background: var(--primary-grad); border-radius: 50%; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; }
+        .nav-links a:hover { color: var(--primary-color); }
 
         /* --- HERO --- */
-        header { text-align: center; padding: 100px 20px 120px; }
-        .pill { background: var(--secondary-bg); color: var(--primary-solid); padding: 8px 16px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; display: inline-block; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px;}
-        h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 25px; letter-spacing: -1px;}
-        h1 span { background: linear-gradient(180deg, transparent 65%, #D6BCFA 65%); }
-        .subtitle { font-size: 1.25rem; color: var(--text-grey); max-width: 700px; margin: 0 auto 40px; line-height: 1.6; }
-        .hero-btns { display: flex; gap: 15px; justify-content: center; }
+        .hero { padding-top: 80px; padding-bottom: 100px; }
+        .hero p { font-size: 1.3rem; color: var(--text-grey); max-width: 700px; margin: 0 auto 40px; }
+        .trust-bar { margin-top: 60px; padding-top: 40px; border-top: 1px solid rgba(0,0,0,0.05); }
+        .trust-logos { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; opacity: 0.6; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;}
 
-        /* --- SECTIONS (FIXED SPACING) --- */
-        section { padding: 100px 0; }
+        /* --- 3 PILLARS GRID --- */
+        .glass-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-soft);
+            transition: transform 0.3s;
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+        .glass-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
 
-        /* Explicit massive top padding for the two crowded sections */
-        #cases { padding-top: 160px; } 
-        #form { padding-top: 160px; }
-        
-        .sec-title { font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 15px; letter-spacing: -0.5px; }
-        .sec-sub { text-align: center; color: var(--text-grey); margin-bottom: 60px; max-width: 600px; margin-left: auto; margin-right: auto; font-size: 1.1rem;}
-        
-        /* --- CARDS & GRID --- */
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
-        
-        .grid-auto { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
-            gap: 30px; 
-            justify-content: center;
-        }
-        
-        .card { background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.6); padding: 35px; border-radius: var(--radius-xl); transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); background: white; box-shadow: var(--shadow-soft); }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .feature-icon { font-size: 3rem; margin-bottom: 20px; background: #F3EEFF; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-left: auto; margin-right: auto;}
+        .feature-card h3 { font-size: 1.4rem; margin-bottom: 15px; }
 
-        /* --- iMESSAGE STYLE CHAT --- */
-        .chat-box-imessage { 
-            background: #FFFFFF; 
-            height: 380px; 
-            margin-top: 25px; 
-            border-radius: var(--radius-md); 
-            padding: 25px 20px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            overflow-y: auto; 
-            font-size: 0.95rem; 
-            border: 1px solid #E5E7EB;
-        }
-        
-        .imsg { 
-            padding: 10px 16px; 
-            border-radius: 20px; 
-            max-width: 80%; 
-            line-height: 1.4; 
-            position: relative;
-            font-weight: 500;
-        }
-        
-        /* AI Bubble (Received - Gray) */
-        .imsg-ai { 
-            align-self: flex-start; 
-            background: #E9E9EB; 
-            color: black;
-            border-bottom-left-radius: 5px; 
-        }
-        
-        /* User Bubble (Sent - Blue Gradient) */
-        .imsg-user { 
-            align-self: flex-end; 
-            background: linear-gradient(to bottom, #37A6F8, #0F76F2);
-            color: white; 
-            border-bottom-right-radius: 5px; 
-        }
+        /* --- ROI / MISSED REVENUE SECTION --- */
+        .roi-section { background: white; border-radius: var(--radius-xl); padding: 60px; box-shadow: var(--shadow-soft); margin-top: 60px;}
+        .roi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;}
+        .stat-box { margin-bottom: 30px; }
+        .stat-big { font-size: 3rem; font-weight: 800; color: #FF4757; line-height: 1;}
+        .stat-label { font-size: 1.1rem; font-weight: 500; color: var(--text-grey); }
+        .solution-box { background: #F0FCF4; padding: 30px; border-radius: var(--radius-md); border-left: 5px solid #2ECC71; }
 
-        .delivered-label {
-            align-self: flex-end;
-            font-size: 0.7rem;
-            color: #999;
-            margin-top: -5px;
-            margin-right: 10px;
-            font-weight: 500;
+        /* --- CHAT DEMOS (SMS/WhatsApp Style) --- */
+        .cases-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+        .case-card { padding: 0; overflow: hidden; border: none; }
+        .case-content { padding: 30px; }
+        .case-meta { text-transform: uppercase; color: var(--primary-color); font-weight: 600; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 10px;}
+        .case-title { font-size: 1.4rem; margin-bottom: 10px; }
+        
+        .chat-container {
+            background-color: var(--msg-bg);
+            background-image: radial-gradient(#d4cdc5 7%, transparent 7%), radial-gradient(#d4cdc5 7%, transparent 7%);
+            background-position: 0 0, 10px 10px; background-size: 20px 20px;
+            height: 400px;
+            display: flex; flex-direction: column;
+            border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg);
         }
+        .chat-header {
+            background: var(--msg-green-header); color: white; padding: 15px;
+            display: flex; align-items: center; gap: 10px; font-size: 0.9rem;
+        }
+        .avatar { width: 35px; height: 35px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;}
+        
+        .chat-body { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
+        .msg { max-width: 80%; padding: 10px 14px; border-radius: 8px; font-size: 0.9rem; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); line-height: 1.4; }
+        .msg-ai { align-self: flex-start; background: var(--msg-bubble-ai); border-top-left-radius: 0; }
+        .msg-user { align-self: flex-end; background: var(--msg-bubble-user); border-top-right-radius: 0; }
+        .time { font-size: 0.65rem; color: #999; float: right; margin-top: 5px; margin-left: 10px; }
 
-        /* --- COST COMPARISON --- */
-        .cost-box { background: #fff; padding: 40px; border-radius: var(--radius-xl); box-shadow: var(--shadow-soft); text-align: center; border: 1px dashed #ddd; }
-        .cost-val { font-size: 2.5rem; font-weight: 800; margin: 10px 0; letter-spacing: -1px;}
-        .cost-label { text-transform: uppercase; font-size: 0.85rem; font-weight: 700; color: #9CA3AF; letter-spacing: 1px;}
-
-        /* --- FORM STYLES (UPDATED SPACING) --- */
-        .form-section { 
-            background: white; 
-            border-radius: var(--radius-xl); 
-            /* Fixed: 80px top padding ensures title isn't cramped */
-            padding: 80px 50px; 
-            box-shadow: var(--shadow-soft); 
-            max-width: 900px; 
-            margin: 0 auto; 
-            position: relative; 
-            overflow: hidden; 
+        /* --- FORM --- */
+        .form-section {
+            background: white; border-radius: var(--radius-xl); padding: 60px 50px;
+            box-shadow: var(--shadow-soft); max-width: 900px; margin: 0 auto;
+            position: relative; overflow: hidden;
         }
         .form-section::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: var(--primary-grad); }
-        
-        .form-group { margin-bottom: 35px; text-align: left; }
-        .form-label { display: block; font-weight: 600; margin-bottom: 12px; font-size: 1rem; color: var(--text-dark); }
-        .form-select, .form-input { 
-            width: 100%; 
-            padding: 16px 20px; 
-            border: 1px solid #E5E7EB; 
-            border-radius: 12px; 
-            font-size: 1rem; 
-            outline: none; 
-            transition: 0.2s; 
-            background: #F9FAFB; 
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .form-label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        .form-input { 
+            width: 100%; padding: 14px 20px; border: 1px solid #E5E7EB; border-radius: 12px; 
+            font-size: 1rem; outline: none; transition: 0.2s; background: #F9FAFB; 
         }
-        .form-select:focus, .form-input:focus { border-color: var(--primary-solid); background: white; box-shadow: 0 0 0 3px rgba(127, 39, 255, 0.1); }
-        
-        footer { margin-top: 100px; padding: 60px 20px; background: white; text-align: center; color: var(--text-grey); font-size: 0.9rem; border-top: 1px solid #f0f0f0;}
+        .form-input:focus { border-color: var(--primary-color); background: white; }
 
-        @media (max-width: 768px) {
+        footer { margin-top: 80px; padding: 50px 0; border-top: 1px solid #eee; color: #888; font-size: 0.9rem;}
+
+        @media (max-width: 900px) {
             h1 { font-size: 2.5rem; }
-            .grid-2 { grid-template-columns: 1fr; gap: 20px; }
             .nav-links { display: none; }
-            .form-section { padding: 40px 20px; }
-            .hero-btns { flex-direction: column; }
+            .roi-grid, .grid-2 { grid-template-columns: 1fr; }
+            .form-section { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
 
-<div class="blobs">
-    <div class="blob b1"></div>
-    <div class="blob b2"></div>
+<div class="bg-gradients">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 </div>
 
 <nav>
-    <div class="logo"><div class="dot"></div>PVC AI USA</div>
-    <div class="nav-links">
-        <a href="#why">Why AI?</a>
-        <a href="#cases">Live Cases</a>
-        <a href="#form">Get Strategy</a>
+    <div class="logo">
+        <div class="logo-dot"></div>
+        PocketVC
     </div>
-    <a href="#form" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Book Audit</a>
+    <div class="nav-links">
+        <a href="#agents">Our Agents</a>
+        <a href="#cases">Live Demos</a>
+        <a href="#audit">Revenue Audit</a>
+    </div>
+    <a href="#audit" class="btn btn-primary" style="font-size: 0.9rem; padding: 12px 24px;">Get Strategy</a>
 </nav>
 
-<header class="container">
-    <div class="pill">🇺🇸 English & Spanish 🇪🇸</div>
-    <h1>Hire a 24/7 Sales Team<br> for <span>$0/Hour</span></h1>
-    <p class="subtitle">Bilingual AI Agents for Home Remodeling, Auto Shops, and Local Services. Respond instantly via iMessage/SMS, qualify leads, and book appointments while you sleep.</p>
-    <div class="hero-btns">
-        <a href="#form" class="btn btn-primary">Calculate My Savings</a>
-        <a href="#cases" class="btn btn-white">See Agents Demo</a>
+<header class="hero container text-center">
+    <span class="pill-tag">AI Infrastructure for Local Business</span>
+    <h1>Automate Your Front Desk.<br> <span class="highlight-text">Zero Missed Revenue.</span></h1>
+    <p>We build digital infrastructure for Medical Clinics, Construction, and Salons. <br>Capture every lead, answer every question, and book appointments 24/7.</p>
+    
+    <div style="display: flex; gap: 15px; justify-content: center;">
+        <a href="#audit" class="btn btn-primary">Get Your Revenue Audit</a>
+        <a href="#cases" class="btn btn-white">See It In Action</a>
     </div>
-    <p style="margin-top: 20px; font-size: 0.9rem; color: #888;">Serving California Businesses | No Credit Card Required</p>
+
+    <div class="trust-bar text-center">
+        <p style="margin-bottom: 20px; font-size: 0.85rem; font-weight: 600;">TRUSTED SOLUTIONS FOR INDUSTRY LEADERS</p>
+        <div class="trust-logos">
+            <span>🔨 Construction & Roofing</span>
+            <span>•</span>
+            <span>🦷 Dental & Medical</span>
+            <span>•</span>
+            <span>💇‍♀️ Salons & Spas</span>
+            <span>•</span>
+            <span>🐾 Veterinary</span>
+        </div>
+    </div>
 </header>
 
-<section id="why" class="container">
-    <h2 class="sec-title">Stop Losing Leads to Voicemail</h2>
-    <p class="sec-sub">In California, labor is expensive. Missing a call costs you thousands. Here is the math.</p>
+<section id="agents" class="section-pad container">
+    <h2 class="section-title text-center">The 3-Agent System</h2>
+    <p class="section-subtitle text-center">We don't just "sell." We install a complete digital operations team.</p>
     
-    <div class="grid-2">
-        <div class="cost-box">
-            <div class="cost-label">Human Receptionist (CA)</div>
-            <div class="cost-val" style="color: #EF4444;">$4,500<span style="font-size: 1rem; color: #999;">/mo</span></div>
-            <ul style="text-align: left; margin-top: 20px; list-style: none; color: #666;">
-                <li style="margin-bottom: 10px;">❌ Available 9am - 5pm only</li>
-                <li style="margin-bottom: 10px;">❌ Sick days, taxes, insurance</li>
-                <li style="margin-bottom: 10px;">❌ Misses calls during lunch</li>
-                <li>❌ Speaks only one language</li>
-            </ul>
+    <div class="features-grid">
+        <div class="glass-card text-center">
+            <div class="feature-icon">📞</div>
+            <h3>24/7 Receptionist</h3>
+            <p><strong>The Operational Backbone.</strong><br>Answers missed calls instantly via text. Handles FAQ, scheduling, and emergency triage while your team is busy working.</p>
         </div>
-
-        <div class="cost-box" style="border: 2px solid var(--primary-solid); background: #FBFAFF;">
-            <div class="cost-label" style="color: var(--primary-solid);">Your AI Agent</div>
-            <div class="cost-val" style="color: var(--primary-solid);">~$299<span style="font-size: 1rem; color: #999;">/mo</span></div>
-            <ul style="text-align: left; margin-top: 20px; list-style: none; color: #333; font-weight: 500;">
-                <li style="margin-bottom: 10px;">✅ <strong>Instant Response (Under 30s)</strong></li>
-                <li style="margin-bottom: 10px;">✅ Works 24/7/365 (Nights & Weekends)</li>
-                <li style="margin-bottom: 10px;">✅ <strong>Fluent in English & Spanish</strong></li>
-                <li>✅ Integrates with your Calendar</li>
-            </ul>
-        </div>
-    </div>
-</section>
-
-<section id="cases" class="container">
-    <h2 class="sec-title">Real iMessage Conversations</h2>
-    <p class="sec-sub">See how AI handles complex conversations in English and Spanish.</p>
-    
-    <div class="grid-auto">
         
-        <div class="card">
-            <div style="margin-bottom: 15px;">
-                <span style="background: #E0F2FE; color: #0369A1; padding: 5px 10px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">HOME REMODELING</span>
-            </div>
-            <h3>Kitchen & Bath Reno</h3>
-            <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Qualifying leads & budget check</p>
-            <div class="chat-box-imessage">
-                <div class="imsg imsg-user">Hi, I want a quote for a kitchen remodel in San Jose.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">Hello! I'd love to help with that. Are you looking to update existing cabinets or do a full demo/remodel?</div>
-                <div class="imsg imsg-user">Full remodel. New island, floors, everything.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">Sounds like a great project! For a full remodel, budgets typically start at $40k. Does that align with what you had in mind?</div>
-                <div class="imsg imsg-user">Yes, that's in our range.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">Perfect. I have an opening for a site estimate this Thursday at 10 AM. Should I book that for you?</div>
-            </div>
+        <div class="glass-card text-center">
+            <div class="feature-icon">💸</div>
+            <h3>Revenue Hunter</h3>
+            <p><strong>The Reactivation Engine.</strong><br>Scans your old lead database and sends personalized SMS offers to fill empty calendar slots. Turns "dead data" into cash.</p>
         </div>
 
-        <div class="card">
-            <div style="margin-bottom: 15px;">
-                <span style="background: #FEF3C7; color: #B45309; padding: 5px 10px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">AUTO REPAIR</span>
+        <div class="glass-card text-center">
+            <div class="feature-icon">⭐</div>
+            <h3>Reputation Guardian</h3>
+            <p><strong>The Brand Protector.</strong><br>Monitors Google Maps 24/7. Instantly replies to reviews professionally and politely asks happy clients for 5 stars.</p>
+        </div>
+    </div>
+
+    <div class="roi-section">
+        <div class="roi-grid">
+            <div>
+                <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 20px;">The Cost of Doing Nothing</h2>
+                <div class="stat-box">
+                    <div class="stat-big">$225</div>
+                    <div class="stat-label">Avg. Revenue Lost Per Missed Call</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-big">62%</div>
+                    <div class="stat-label">of Leads Go to the Competitor Who Answers First</div>
+                </div>
             </div>
-            <h3>Local Mechanic Shop</h3>
-            <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Pricing & Scheduling</p>
-            <div class="chat-box-imessage">
-                <div class="imsg imsg-user">How much for front brakes on a 2018 Ford F-150?</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">Hey! For a 2018 F-150, front brake pads and rotors usually run about $450-$520 depending on parts. We can get it done in 2 hours.</div>
-                <div class="imsg imsg-user">Okay, can I bring it in tomorrow?</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">I have a slot at 1:00 PM tomorrow. If you book now, I'll add a free tire rotation. Want me to lock it in?</div>
-                <div class="imsg imsg-user">Yeah, let's do it.</div>
-                <div class="delivered-label">Delivered</div>
+            <div class="solution-box">
+                <h3 style="margin-bottom: 15px; color: #075E54;">✅ The PocketVC Fix</h3>
+                <p style="margin-bottom: 15px;">We install a safety net around your business. Our system responds in <strong>under 10 seconds</strong>.</p>
+                <ul style="list-style: none;">
+                    <li style="margin-bottom: 10px;">✓ 0 Missed Opportunities</li>
+                    <li style="margin-bottom: 10px;">✓ Immediate "Speed-to-Lead"</li>
+                    <li>✓ 100% Calendar Utilization</li>
+                </ul>
             </div>
         </div>
-
-        <div class="card">
-            <div style="margin-bottom: 15px;">
-                <span style="background: #DCFCE7; color: #15803D; padding: 5px 10px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">HVAC & PLUMBING</span>
-            </div>
-            <h3>Emergency Services</h3>
-            <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">After-hours dispatch</p>
-            <div class="chat-box-imessage">
-                <div class="imsg imsg-user">My AC stopped working and it's 90 degrees inside. Help.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">I'm sorry to hear that! Since it's after 8 PM, this would be an emergency dispatch ($150 fee). We can have a tech there in 45 mins.</div>
-                <div class="imsg imsg-user">I don't care about the fee, just send someone.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">Understood. Tech dispatched to [Address]. Please keep your phone on, they will call upon arrival. Hang in there! ❄️</div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div style="margin-bottom: 15px;">
-                <span style="background: #d4ffc7; color: #2e7d32; padding: 5px 10px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">LANDSCAPING (ESPAÑOL)</span>
-            </div>
-            <h3>Garden & Tree Service</h3>
-            <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Full bilingual negotiation</p>
-            <div class="chat-box-imessage">
-                <div class="imsg imsg-user">Hola, necesito un presupuesto para limpiar mi jardín y cortar dos árboles.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">¡Hola! Claro que sí. 🌳 ¿Los árboles son muy altos o están cerca de la casa? Necesito saber para enviar el equipo correcto.</div>
-                <div class="imsg imsg-user">Son grandes, están pegados a la cerca.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">Entendido. Para árboles grandes cerca de estructuras, necesitamos hacer una visita técnica gratuita. ¿Te queda bien este viernes a las 9 AM?</div>
-                <div class="imsg imsg-user">Sí, perfecto. Gracias.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">¡Listo! Viernes a las 9 AM. Nos vemos. 🚛</div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div style="margin-bottom: 15px;">
-                <span style="background: #E8EAF6; color: #3F51B5; padding: 5px 10px; border-radius: 4px; font-weight: 700; font-size: 0.8rem;">HOUSE PAINTING (ESPAÑOL)</span>
-            </div>
-            <h3>Interior & Exterior Painting</h3>
-            <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">Estimate & Booking</p>
-            <div class="chat-box-imessage">
-                <div class="imsg imsg-user">Hola, quiero pintar mi casa completa. Interior y exterior.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">¡Hola! 🎨 Gran proyecto. ¿La casa es de un piso o dos? ¿Y cuántos pies cuadrados (sq ft) tiene aproximadamente?</div>
-                <div class="imsg imsg-user">Dos pisos, 2500 sq ft.</div>
-                <div class="delivered-label">Delivered</div>
-                <div class="imsg imsg-ai">Perfecto. Para ese tamaño, pintar todo suele rondar los $7,000 - $9,000 incluyendo materiales premium. ¿Te gustaría una visita gratis mañana para el precio final?</div>
-                <div class="imsg imsg-user">Si, vengan mañana.</div>
-                <div class="delivered-label">Delivered</div>
-            </div>
-        </div>
-
     </div>
 </section>
 
-<section id="form" class="container">
+<section id="cases" class="section-pad container">
+    <h2 class="section-title text-center">Real Conversations</h2>
+    <p class="section-subtitle text-center">See how our agents handle real-world scenarios in your industry.</p>
+
+    <div class="cases-grid">
+        <div class="glass-card case-card">
+            <div class="case-content">
+                <div class="case-meta">Construction & Trades</div>
+                <h3 class="case-title">Mike's Roofing Co.</h3>
+                <p style="font-size: 0.9rem; color: #666;">Scenario: Client calls while Mike is on a roof. Agent texts back instantly.</p>
+            </div>
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="avatar">🔨</div>
+                    <div>
+                        <div style="font-weight: 600;">Mike's Office (AI)</div>
+                        <div style="font-size: 0.75rem; opacity: 0.9;">Typical reply time: &lt;1m</div>
+                    </div>
+                </div>
+                <div class="chat-body">
+                    <div class="msg msg-ai">
+                        Hey! 👋 saw you just called. I'm up on a roof right now but my digital assistant can grab your info. Is this for a repair or a new roof?
+                        <div class="time">10:05 AM</div>
+                    </div>
+                    <div class="msg msg-user">
+                        Hi, yeah we have a leak in the garage. Need someone to look at it ASAP.
+                        <div class="time">10:06 AM</div>
+                    </div>
+                    <div class="msg msg-ai">
+                        Got it. We handle emergency repairs. 🚑 Can you text me your address? I can have a crew stop by tomorrow morning for an estimate.
+                        <div class="time">10:06 AM</div>
+                    </div>
+                    <div class="msg msg-user">
+                        Sure, it's 124 Oak Street, Menlo Park.
+                        <div class="time">10:07 AM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card case-card">
+            <div class="case-content">
+                <div class="case-meta">Dental Clinic</div>
+                <h3 class="case-title">Dr. Sarah Smith, DDS</h3>
+                <p style="font-size: 0.9rem; color: #666;">Scenario: Reactivating an old patient for a checkup.</p>
+            </div>
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="avatar">🦷</div>
+                    <div>
+                        <div style="font-weight: 600;">Front Desk (AI)</div>
+                        <div style="font-size: 0.75rem; opacity: 0.9;">Active Now</div>
+                    </div>
+                </div>
+                <div class="chat-body">
+                    <div class="msg msg-ai">
+                        Hi John! It's been 6 months since your last cleaning at Smith Dental. We have an opening this Thursday at 2pm. Want to grab it? 🦷
+                        <div class="time">9:00 AM</div>
+                    </div>
+                    <div class="msg msg-user">
+                        I'm working Thursday. Do you have anything Saturday?
+                        <div class="time">10:45 AM</div>
+                    </div>
+                    <div class="msg msg-ai">
+                        Let me check... Yes! We have a 10:30 AM this Saturday. Shall I book you in? (It takes 45 mins).
+                        <div class="time">10:45 AM</div>
+                    </div>
+                    <div class="msg msg-user">
+                        Perfect, lock it in.
+                        <div class="time">10:46 AM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="glass-card case-card">
+            <div class="case-content">
+                <div class="case-meta">Beauty & Spa</div>
+                <h3 class="case-title">Luxe Salon</h3>
+                <p style="font-size: 0.9rem; color: #666;">Scenario: Handling a "Are you open?" Google Maps inquiry.</p>
+            </div>
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="avatar">💇‍♀️</div>
+                    <div>
+                        <div style="font-weight: 600;">Luxe Booking Bot</div>
+                        <div style="font-size: 0.75rem; opacity: 0.9;">Active Now</div>
+                    </div>
+                </div>
+                <div class="chat-body">
+                    <div class="msg msg-user">
+                        Do you guys have anyone who does Balayage available today?
+                        <div class="time">4:15 PM</div>
+                    </div>
+                    <div class="msg msg-ai">
+                        Hi! Yes, our senior stylist Elena has a cancellation at 5:30 PM today. It's our last slot! ✂️ Want to take it?
+                        <div class="time">4:15 PM</div>
+                    </div>
+                    <div class="msg msg-user">
+                        Oh lucky me! Yes please. How much is it?
+                        <div class="time">4:16 PM</div>
+                    </div>
+                    <div class="msg msg-ai">
+                        Balayage starts at $200. I've reserved the 5:30 PM slot for you. See you soon!
+                        <div class="time">4:16 PM</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="audit" class="container" style="padding-bottom: 100px;">
     <div class="form-section">
-        <h2 class="sec-title">Get Your AI Strategy Report</h2>
-        <p class="sec-sub">Fill out the form below to get a custom breakdown of how AI can lower your overhead and increase sales in California.</p>
+        <div class="text-center" style="margin-bottom: 40px;">
+            <h2 class="section-title">Get Your Missed Revenue Audit</h2>
+            <p class="section-subtitle">We will analyze your current digital setup and show you exactly how much revenue you are losing to missed calls and slow follow-ups.</p>
+        </div>
         
-        <form action="https://formspree.io/f/YOUR_FORMSPREE_ID_HERE" method="POST">
+        <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
             
             <div class="grid-2">
-                <div class="form-group">
-                    <label class="form-label">Business Industry</label>
-                    <select name="industry" class="form-select">
-                        <option>🏠 Home Remodeling / Construction</option>
-                        <option>❄️ HVAC / Plumbing / Electric</option>
-                        <option>🚗 Auto Repair / Detailing</option>
-                        <option>🌳 Landscaping / Gardening</option>
-                        <option>🎨 House Painting (Interior/Exterior)</option>
-                        <option>🦷 Dental / Med Spa</option>
-                        <option>Other...</option>
+                <div>
+                    <label class="form-label">Industry</label>
+                    <select name="industry" class="form-input">
+                        <option>Construction / Roofing / Trades</option>
+                        <option>Dental / Medical Clinic</option>
+                        <option>Salon / Spa / Beauty</option>
+                        <option>Veterinary Clinic</option>
+                        <option>Other</option>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">Monthly Ad Spend (Google/Meta)</label>
-                    <select name="ad_spend" class="form-select">
-                        <option>None (Word of Mouth)</option>
-                        <option>Under $1,000</option>
-                        <option selected>$1,000 - $5,000</option>
-                        <option>$5,000 - $20,000</option>
-                        <option>$20,000+</option>
+                <div>
+                    <label class="form-label">Est. Missed Calls / Week</label>
+                    <select name="missed_calls" class="form-input">
+                        <option>I don't know (Most Common)</option>
+                        <option>1 - 5 Calls</option>
+                        <option>5 - 20 Calls</option>
+                        <option>20+ Calls</option>
                     </select>
                 </div>
             </div>
 
-            <div class="grid-2">
-                <div class="form-group">
-                    <label class="form-label">Primary Pain Point?</label>
-                    <select name="pain_point" class="form-select">
-                        <option>Missed Calls / Speed to Lead</option>
-                        <option>High Staff Costs (Salaries)</option>
-                        <option>Need Bilingual Support (Español)</option>
-                        <option>Getting Google Reviews</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label">Website URL (Optional)</label>
-                    <input type="text" name="website" class="form-input" placeholder="www.yourbusiness.com">
-                </div>
-            </div>
-
-            <div class="grid-2">
-                <div class="form-group">
+            <div class="grid-2" style="margin-top: 20px;">
+                <div>
                     <label class="form-label">Your Name</label>
                     <input type="text" name="name" class="form-input" placeholder="John Doe" required>
                 </div>
-                <div class="form-group">
+                <div>
                     <label class="form-label">Phone Number</label>
-                    <input type="tel" name="phone" class="form-input" placeholder="(415) 555-0123" required>
+                    <input type="tel" name="phone" class="form-input" placeholder="(555) 123-4567" required>
                 </div>
             </div>
+
+            <div style="margin-top: 20px;">
+                <label class="form-label">Company Website (Optional)</label>
+                <input type="text" name="website" class="form-input" placeholder="www.yourbusiness.com">
+            </div>
             
-            <div style="margin-top: 20px; text-align: center;">
-                <button type="submit" class="btn btn-primary" style="width: 100%; max-width: 450px; padding: 18px; font-size: 1.1rem;">Get My Free Audit & Report</button>
-                <p style="font-size: 0.8rem; color: #999; margin-top: 15px;">We respect your privacy. No spam.</p>
+            <div style="margin-top: 40px; text-align: center;">
+                <button type="submit" class="btn btn-primary" style="width: 100%; max-width: 450px; padding: 18px; font-size: 1.1rem;">Request My Free Audit</button>
+                <p style="font-size: 0.8rem; color: #999; margin-top: 15px;">No commitment required. We strictly respect your privacy.</p>
             </div>
 
         </form>
     </div>
 </section>
 
-<footer>
-    <div class="logo" style="justify-content: center; margin-bottom: 20px;"><div class="dot"></div>PVC AI USA</div>
-    <p>San Francisco, CA | hello@pvcai.com</p>
-    <p style="margin-top: 10px; opacity: 0.6;">© 2026 PVC AI Agency. All rights reserved.</p>
+<footer class="text-center">
+    <div class="logo" style="justify-content: center; margin-bottom: 20px;">
+        <div class="logo-dot"></div> PocketVC
+    </div>
+    <p>San Francisco • Silicon Valley • Remote</p>
+    <p style="margin-top: 20px; opacity: 0.6;">© 2026 PocketVC AI. All rights reserved.</p>
 </footer>
 
 </body>
